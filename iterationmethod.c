@@ -3,10 +3,10 @@
 #define EPS 0.0001
 
 float f(float x){
-    return x*x*x +4;
+    return x*x*x + 4;
 }
 
-float findFloatat(float x){
+float findRootAt(float x){
     return 1/sqrt(1+x);
 }
 
@@ -16,44 +16,42 @@ float differentiate(float x){
 
 int main(){
     int maxIteration, i;
-    float a,b,x0;
-    int x;
+    float a, b, x0;
+    float x;
+    
     printf("Enter maximum number of iterations:");
     scanf("%d", &maxIteration);
     
-    do{
-        printf("enter values of a and b (starting boundary):");
+    do {
+        printf("Enter values of a and b (starting boundary):");
         scanf("%f%f", &a, &b);
-        if(f(a)*f(b)<0){
-            printf("invalid");
-            continue;
-        }
-        else{
-
-            printf("roots betn %d and %f\n", i, x);
+        if (f(a) * f(b) < 0) {
             break;
         }
-    }while(1);
+        else {
+            printf("Invalid starting boundary.\n");
+            continue;
+        }
+    } while (1);
 
-    x0=(a+b)/2;
-    if(fabs(differentiate(x0)),1){
-        printf("function corrent");
+    x0 = (a + b) / 2;
+    if (fabs(differentiate(x0)) < 1) {
+        printf("Function is correct.\n");
     }
-    else{
-        printf("wrong value dinchas saley???");
+    else {
+        printf("Function is incorrect.\n");
         return 0;
     }
 
-    for(i=0; i<=maxIteration; i++){
-        x=findFloatat(x0);
-        if(fabs(x-x0)<EPS){
-            printf("itertion=%d root=%f\n", i,x);
+    for (i = 0; i <= maxIteration; i++) {
+        x = findRootAt(x0);
+        if (fabs(x - x0) < EPS) {
+            printf("Iteration = %d, Root = %f\n", i, x);
             return 0;
         }
-        printf("iteration=%d root=%f\n", i,x);
-        x0=x;
+        printf("Iteration = %d, Root = %f\n", i, x);
+        x0 = x;
     }
-    printf("root=%f totsl iteration=%d",x, --i);
+    printf("Root = %f, Total Iterations = %d\n", x, --i);
     return 0;
-
 }

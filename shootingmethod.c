@@ -1,5 +1,3 @@
-//shooting method
-
 #include <stdio.h>
 #include <math.h>
 
@@ -41,8 +39,16 @@ double shootingMethod(double x0, double y0, double xn, double y_target, double t
     double yp_upper = 1; // Initial guess for the upper bound of y'
     double y_lower, y_upper;
     double y_guess;
+    int max_iterations = 1000; // Maximum number of iterations
     
-    while (1) {
+    // Ensure that yp_upper is higher than yp_lower
+    if (yp_upper < yp_lower) {
+        double temp = yp_lower;
+        yp_lower = yp_upper;
+        yp_upper = temp;
+    }
+    
+    for (int i = 0; i < max_iterations; ++i) {
         rungeKutta(x0, y0, yp_lower, 0.001, xn, &y_lower);
         rungeKutta(x0, y0, yp_upper, 0.001, xn, &y_upper);
         
@@ -50,8 +56,10 @@ double shootingMethod(double x0, double y0, double xn, double y_target, double t
         
         rungeKutta(x0, y0, y_guess, 0.001, xn, &y_guess);
         
+        printf("Iteration %d: y_guess = %f\n", i+1, y_guess);
+        
         if (fabs(y_guess - y_target) < tolerance) {
-            break;
+            return y_guess;
         } else if (y_guess > y_target) {
             yp_upper = y_guess;
         } else {
@@ -59,6 +67,7 @@ double shootingMethod(double x0, double y0, double xn, double y_target, double t
         }
     }
     
+    printf("Shooting method did not converge within %d iterations.\n", max_iterations);
     return y_guess;
 }
 
